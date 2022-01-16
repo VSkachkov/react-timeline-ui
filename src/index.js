@@ -49,7 +49,7 @@ const options = {
         updateGroup: false,
         updateTime: true
     },
-
+    horizontalScroll: true,
     margin: {
         axis: 5,
         item: {
@@ -57,6 +57,7 @@ const options = {
             horizontal: 0
         }
     },
+    moveable: true,
     orientation: {
         axis: "both",
         item: "top"
@@ -72,6 +73,7 @@ const options = {
     type: "range",
     width: "100%",
     zoomable: true,
+    zoomKey: 'ctrlKey',
     zoomMin: 147600000,
     zoomMax: 51840000000
 };
