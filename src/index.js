@@ -78,17 +78,17 @@ const options = {
 const items = [
     {
         start: moment()
-            .subtract(4, "days")
+            .subtract(7, "days")
             .format(),
         end: moment()
-            .subtract(3, "days")
+            .subtract(1, "days")
             .format(), // end is optional
-        content: "Step1",
+        content: "<img src=\"https://www.w3schools.com/images/w3schools_green.jpg\" alt=\"W3Schools.com\" style=\"width:128px;height:128px;\"><p>Hello World</p>",
         group: "a1"
     },
     {
         start: moment()
-            .subtract(3, "days")
+            .subtract(5, "days")
             .format(),
         end: moment().format(), // end is optional
         content: "Step2",
