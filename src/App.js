@@ -19,15 +19,6 @@ const groups = [
     {
         id: "a1",
         content: "Study"
-        /*     subgroupOrder: (a, b) => {
-          console.log("What are we doing here??");
-          console.log("A:", a, "B:", b);
-          let r = 0;
-          if (a.subgroup === 2) return (r = 1);
-          if (b.subgroup === 5) return (r = -1);
-          console.log("Result:", r);
-          return r;
-        } */
     },
     {
         id: "a2",
@@ -97,7 +88,7 @@ const INITIAL_ITEMS = [
         group: "a2"
     }
 ];
-const DisplayComponent = () => {
+const App = () => {
     const [items, setActions] = useState(INITIAL_ITEMS);
     const [options, setOptions] = useState(INITIAL_OPTIONS);
     let actionButtons;
@@ -210,4 +201,4 @@ const DisplayComponent = () => {
     );
 }
 
-export default DisplayComponent;
+export default App;
