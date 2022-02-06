@@ -88,6 +88,12 @@ const INITIAL_ITEMS = [
         group: "a2"
     }
 ];
+
+function createMessageFromItem(item) {
+    return '<h5>'+ item.authorName + '</h5>'
+        // + item.text; //TODO
+}
+
 const App = () => {
     const [items, setActions] = useState(INITIAL_ITEMS);
     const [options, setOptions] = useState(INITIAL_OPTIONS);
@@ -139,7 +145,7 @@ const App = () => {
                 return {
                     start: item.msgDate,
                     end: moment(item.msgDate).add(50000000),
-                    content: item.text,
+                    content: createMessageFromItem(item),
                     group: 'a1'
                 }
             });
@@ -176,13 +182,6 @@ const App = () => {
         });
         setActions(transformedItems);
       });
-      // const items = [ {
-      //   start: '2018-01-02',
-      //   end: '2018-01-03',
-      //   content: 'Hello',
-      //   group: "a3"
-      // }]
-      // setActions(items);
     };
 
     return (
