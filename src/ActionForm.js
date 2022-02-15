@@ -20,7 +20,7 @@ const ActionForm = (props) => {
         <form onSubmit={submitHandler}>
             <div>
                 <div>
-                    <label>Activity</label>
+                    <label>Event name</label>
                     <input type="text"/>
                 </div>
                 <div>
@@ -28,7 +28,11 @@ const ActionForm = (props) => {
                     <input type="date"/>
                 </div>
                 <div>
-                    <button type="submit">Add expense</button>
+                    <label>Start Date</label>
+                    <input type="date"/>
+                </div>
+                <div>
+                    <button type="submit">Add event</button>
                 </div>
             </div>
         </form>

@@ -89,6 +89,10 @@ const INITIAL_ITEMS = [
     }
 ];
 
+function createTitleItem(item) {
+    return item.text; //TODO
+}
+
 function createMessageFromItem(item) {
     return '<h5>'+ item.authorName + '</h5>'
         // + item.text; //TODO
@@ -132,7 +136,7 @@ const App = () => {
             // start: "2018-01-02",
             // end: "2018-01-03"
         };
-        fetch("http://localhost:8080/get/messages/", {
+        fetch("http://localhost:8080/messages/", {
             method: 'POST',
             body: JSON.stringify(request),
             headers: {
@@ -145,13 +149,37 @@ const App = () => {
                 return {
                     start: item.msgDate,
                     end: moment(item.msgDate).add(50000000),
+                    id: item.id,
+                    title: createTitleItem(item),
                     content: createMessageFromItem(item),
                     group: 'a1'
                 }
             });
             setActions(transformedItems);
         });
-        // setActions([item]);
+
+        fetch("http://localhost:8080/events/search", {
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            const transformedItems = data.map(item => {
+                return {
+                    start: item.startDate,
+                    end: item.endDate,
+                    id: item.id,
+                    title: createTitleItem(item),
+                    content: createMessageFromItem(item),
+                    group: 'a3'
+                }
+            });
+            setActions(transformedItems);
+        });
+
         setOptions(new_options);
     }
 
@@ -162,7 +190,7 @@ const App = () => {
         start: "2018-01-02",
         end: "2018-01-03"
       };
-      fetch("http://localhost:8080/get/messages/", {
+      fetch("http://localhost:8080/messages/", {
         method: 'POST',
         body: JSON.stringify(request),
         headers: {
@@ -184,6 +212,21 @@ const App = () => {
       });
     };
 
+    const mouseOverHandler = (change) => {
+        // console.log(change)
+    }
+
+
+    const selectHandler = (change) => {
+        console.log("Item is selected")
+        console.log(change)
+    }
+
+    const itemOverHandler = (change) => {
+        console.log("Item over: ")
+        console.log(change.item)
+    }
+
     return (
         <div>
             <Card>
@@ -193,7 +236,7 @@ const App = () => {
                 </CardHeader>
                 <NewAction onAddNewAction={addActionHandler}></NewAction>
                 <CardBody>
-                    <Timeline options={options} items={items} groups={groups} rangechangeHandler={rangeChangeHandler}/>
+                    <Timeline options={options} items={items} groups={groups} itemoverHandler = {itemOverHandler} selectHandler={selectHandler} mouseOverHandler={mouseOverHandler} rangechangeHandler={rangeChangeHandler}/>
                 </CardBody>{" "}
             </Card>
         </div>
