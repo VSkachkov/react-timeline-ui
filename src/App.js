@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, {Component, useState} from "react";
 import moment from "moment";
+import axios from "axios";
 import {
     Button,
     ButtonDropdown,
@@ -123,62 +124,109 @@ const App = () => {
         </div>
     );
 
-    const rangeChangeHandler = (change) => {
+    const rangeChangeHandler = async (change) => {
         const new_options = {
             ...INITIAL_OPTIONS,
             start: change.start,
             end: change.end,
         };
-
         const request = {
             start: change.start,
             end: change.end
             // start: "2018-01-02",
             // end: "2018-01-03"
         };
-        fetch("http://localhost:8080/messages/", {
-            method: 'POST',
-            body: JSON.stringify(request),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            return response.json();
-        }).then(data => {
-            const transformedItems = data.map(item => {
-                return {
-                    start: item.msgDate,
-                    end: moment(item.msgDate).add(50000000),
-                    id: item.id,
-                    title: createTitleItem(item),
-                    content: createMessageFromItem(item),
-                    group: 'a1'
+        let [res1, res2] = await Promise.all([
+            fetch("http://localhost:8080/messages/", {
+                method: 'POST',
+                body: JSON.stringify(request),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            });
-            setActions(transformedItems);
-        });
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                const transformedItems = data.map(item => {
+                    return {
+                        start: item.msgDate,
+                        end: moment(item.msgDate).add(50000000),
+                        id: item.id,
+                        title: createTitleItem(item),
+                        content: createMessageFromItem(item),
+                        group: 'a1'
+                    }
+                });
+                setActions(transformedItems);
+            }),
+            fetch("http://localhost:8080/events/search", {
+                method: 'POST',
+                body: JSON.stringify(request),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                const transformedItems = data.map(item => {
+                    return {
+                        start: item.startDate,
+                        end: item.endDate,
+                        id: item.id,
+                        title: createTitleItem(item),
+                        content: item.name,
+                        group: 'a3'
+                    }
+                });
+                console.log(transformedItems);
 
-        fetch("http://localhost:8080/events/search", {
-            method: 'POST',
-            body: JSON.stringify(request),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            return response.json();
-        }).then(data => {
-            const transformedItems = data.map(item => {
-                return {
-                    start: item.startDate,
-                    end: item.endDate,
-                    id: item.id,
-                    title: createTitleItem(item),
-                    content: createMessageFromItem(item),
-                    group: 'a3'
-                }
-            });
-            setActions(transformedItems);
-        });
+                // setActions(transformedItems);
+            })
+        ]);
+
+        // fetch("http://localhost:8080/messages/", {
+        //     method: 'POST',
+        //     body: JSON.stringify(request),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then(response => {
+        //     return response.json();
+        // }).then(data => {
+        //     const transformedItems = data.map(item => {
+        //         return {
+        //             start: item.msgDate,
+        //             end: moment(item.msgDate).add(50000000),
+        //             id: item.id,
+        //             title: createTitleItem(item),
+        //             content: createMessageFromItem(item),
+        //             group: 'a1'
+        //         }
+        //     });
+        //     setActions(transformedItems);
+        // });
+
+
+        // fetch("http://localhost:8080/events/search", {
+        //     method: 'POST',
+        //     body: JSON.stringify(request),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then(response => {
+        //     return response.json();
+        // }).then(data => {
+        //     const transformedItems = data.map(item => {
+        //         return {
+        //             start: item.startDate,
+        //             end: item.endDate,
+        //             id: item.id,
+        //             title: createTitleItem(item),
+        //             content: createMessageFromItem(item),
+        //             group: 'a3'
+        //         }
+        //     });
+        //     setActions(transformedItems);
+        // });
 
         setOptions(new_options);
     }
